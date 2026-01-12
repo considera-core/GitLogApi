@@ -4,6 +4,14 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Title>GitLog API</Title>
+        <Authors>considera</Authors>
+        <Copyright>2026, Considera Core LLC</Copyright>
+        <PackageReleaseNotes>Init</PackageReleaseNotes>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +22,7 @@
 
     <ItemGroup>
         <None Include="appsettings.projects.json" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

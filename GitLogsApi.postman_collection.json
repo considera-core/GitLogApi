@@ -1,0 +1,130 @@
+{
+	"info": {
+		"name": "GitLogsApi Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PatchReport",
+			"item": [
+				{
+					"name": "Api",
+					"item": [
+						{
+							"name": "AppConfig",
+							"item": [
+								{
+									"name": "Get()",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/AppConfig",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"AppConfig"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Git",
+							"item": [
+								{
+									"name": "GetLogsFromRoot(app, repo)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/Git/GetLogsFromRoot/{{currentApp}}/{{currentRepo}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Git",
+												"GetLogsFromRoot",
+												"{{currentApp}}",
+												"{{currentRepo}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GetLogsFromBranch(app, repo, branch)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/Git/GetLogsFromBranch/{{currentApp}}/{{currentRepo}}/{{currentBranch}}",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"Git",
+												"GetLogsFromRoot",
+												"{{currentApp}}",
+												"{{currentRepo}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "currentApp",
+			"value": ""
+		},
+		{
+			"key": "currentRepo",
+			"value": ""
+		},
+		{
+			"key": "currentBranch",
+			"value": "master"
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5008"
+		}
+	]
+}

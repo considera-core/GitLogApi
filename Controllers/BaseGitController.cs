@@ -3,27 +3,23 @@ using System.Text.RegularExpressions;
 using GitLogApi.Entities.Config;
 using GitLogApi.Entities.DTO;
 using GitLogApi.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace GitLogApi.Controllers;
 
-[Route("api/[controller]")]
-[AllowAnonymous]
 public abstract class BaseGitController : Controller, IGitController
 {
     private readonly ILogger _logger;
-    private readonly BaseAppConfig _appConfig;
+    private readonly IAppConfig _appConfig;
 
     public BaseGitController(
-        IOptionsSnapshot<BaseAppConfig> appConfig,
+        IAppConfig appConfig,
         ILoggerFactory loggerFactory)
     {
         _logger = loggerFactory.CreateLogger<BaseGitController>();
-        _appConfig = appConfig.Value;
+        _appConfig = appConfig;
     }
 
     [HttpGet]
@@ -31,7 +27,7 @@ public abstract class BaseGitController : Controller, IGitController
     [ProducesResponseType(typeof(IEnumerable<LogEntryDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetLogsFromBranch(string app, string repo, string branch)
+    public virtual async Task<IActionResult> GetLogsFromBranch(string app, string repo, string branch)
     {
         try
         {
@@ -39,7 +35,7 @@ public abstract class BaseGitController : Controller, IGitController
                 .GetProjectConfig(app)
                 .GetApp(repo);
             var repoPath = Path.Join(_appConfig.RepositoryRoot, config.Path);
-            return Ok(await GetAllLogs(repoPath, config.GetBranch(branch)));
+            return Ok(await GetAllLogs(repoPath, branch));
         }
         catch (ArgumentException ex)
         {
@@ -57,7 +53,7 @@ public abstract class BaseGitController : Controller, IGitController
     [ProducesResponseType(typeof(IEnumerable<LogEntryDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetLogsFromRoot(string app, string repo)
+    public virtual async Task<IActionResult> GetLogsFromRoot(string app, string repo)
     {
         var rootBranch = _appConfig.Projects.GetProjectConfig(app).GetApp(repo).RootBranch;
         return await GetLogsFromBranch(app, repo, rootBranch);
@@ -84,10 +80,4 @@ public abstract class BaseGitController : Controller, IGitController
 
     public static IEnumerable<LogEntryDTO> FilterLogs(Regex filter, IEnumerable<LogEntryDTO> logs) =>
         logs.Where(l => filter.IsMatch(l.Message)).OrderBy(x => x.Index);
-}
-
-public interface IGitController
-{
-    Task<IActionResult> GetLogsFromBranch(string app, string repo, string branch);
-    Task<IActionResult> GetLogsFromRoot(string app, string repo);
 }

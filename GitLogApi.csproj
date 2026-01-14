@@ -8,6 +8,8 @@
         <Authors>considera</Authors>
         <Copyright>2026, Considera Core LLC</Copyright>
         <PackageReleaseNotes>Init</PackageReleaseNotes>
+        <Version>1.0.4</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -15,9 +17,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11"/>
+        <PackageReference Include="NSwag.AspNetCore" Version="14.6.3" />
         <PackageReference Include="NSwag.Core" Version="14.6.3" />
-        <PackageReference Include="NSwag.Generation.AspNetCore" Version="14.6.3" />
     </ItemGroup>
 
     <ItemGroup>

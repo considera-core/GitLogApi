@@ -51,7 +51,7 @@ public class SomeProjectConfig : IProjectConfig
     public RepoConfig GetApp(string app) =>
         app.ToLower() switch
         {
-            "api" => Api, // api is the RepoKey
+            "api" => Api, // api is the Key in RepoConfig
             _ => throw new ArgumentException($"App '{app}' not found in SomeProjectConfig.")
         };
 
@@ -96,4 +96,6 @@ public class GitController : BaseGitController
 
 ## Notes
 - I need to change some of the lingo regarding the AppDTO and ProjectDTO. Technically it should be ProjectDTO and RepoDTO respectively. I will add a new cumulative AppDTO when I add more features (such as Jira story formatting).
+- It is strongly encouraged you read the source code because running commands are involved, it is important for you to understand how it works. This should be a common practice when using third-party libraries. 
+- In some cases, extra git response lines are being included in the GitController. I will fix this in 1.0.6.
 - You can find a WIP postman collection in the source repo: https://github.com/considera-core/GitLogApi

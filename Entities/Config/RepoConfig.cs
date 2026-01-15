@@ -3,9 +3,9 @@
 public class RepoConfig
 {
     /// <summary>
-    /// Key
+    /// Repo key
     /// </summary>
-    public string RepoKey { get; set; }
+    public string Key { get; set; }
 
     /// <summary>
     /// Root git branch. Either master or main

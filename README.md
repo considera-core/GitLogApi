@@ -90,12 +90,55 @@ public class GitController : BaseGitController
 }
 ```
 
+## Semaphores
+I use semaphores for generating reports, to prevent conflicting git commands.
+Here's an example:
+```csharp
+private static readonly SemaphoreSlim _semaphore = new(1, 1);
+
+[HttpGet]
+[Route("GetReport")]
+[ProducesResponseType(typeof(ReportDTO), StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status404NotFound)]
+[ProducesResponseType(StatusCodes.Status409Conflict)]
+[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+public async Task<IActionResult> GetReport()
+{
+    // Test this in postman with 2 tabs, it's pretty neat!
+    if (!await _semaphore.WaitAsync(0))
+        return StatusCode(StatusCodes.Status409Conflict, "Another report is already running.");
+
+    try
+    {
+        var report = await _service.GetReport();
+        return Ok(report);
+    }
+    catch (ArgumentOutOfRangeException ex)
+    {
+        _logger.LogError(ex, "Error in GetReport");
+        return NotFound("Not found");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error in GetReport");
+        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+    }
+    finally
+    {
+        _semaphore.Release();
+    }
+}
+```
+
 ## Revisions
+### 1.0.6
+- Added semaphores example to README.
+- Added Disabled property to RepoConfig.
+- Added BasePath and Disabled to IProjectConfig.
 ### 1.0.5
 - Added a key string to IProjectsConfig. Use this when implementing GetProjectConfig(). I will improve this in future versions.
-
 ## Notes
 - I need to change some of the lingo regarding the AppDTO and ProjectDTO. Technically it should be ProjectDTO and RepoDTO respectively. I will add a new cumulative AppDTO when I add more features (such as Jira story formatting).
 - It is strongly encouraged you read the source code because running commands are involved, it is important for you to understand how it works. This should be a common practice when using third-party libraries. 
-- In some cases, extra git response lines are being included in the GitController. I will fix this in 1.0.6.
+- In some cases, extra git response lines are being included in the GitController. I will fix this in 1.0.7.
 - You can find a WIP postman collection in the source repo: https://github.com/considera-core/GitLogApi

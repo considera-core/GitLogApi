@@ -17,6 +17,11 @@ public class RepoConfig
     /// </summary>
     public string Path { get; set; }
 
+    /// <summary>
+    /// If true, do not include in any queries
+    /// </summary>
+    public bool? Disabled { get; set; }
+
     public BranchOverridesConfig? BranchOverrides { get; set; }
 
     public string GetBranch(string env) =>

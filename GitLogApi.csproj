@@ -8,7 +8,7 @@
         <Authors>considera</Authors>
         <Copyright>2026, Considera Core LLC</Copyright>
         <PackageReleaseNotes>Init</PackageReleaseNotes>
-        <Version>1.0.4</Version>
+        <Version>1.0.5</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
     <PropertyGroup>
